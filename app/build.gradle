@@ -12,20 +12,13 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.bledemo"
+        applicationId "com.mvi.MVIHealth"
         minSdk 29
         targetSdk 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
     }
 
     buildFeatures {
@@ -39,6 +32,35 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("${rootDir}/local/MVIHealth.keystore")
+
+            keyPassword getSecretProperty("keystore.keyPass", "")
+            storePassword getSecretProperty("keystore.storePass", "")
+            keyAlias getSecretProperty("keystore.keyAlias", "")
+        }
+
+        release {
+            storeFile file("${rootDir}/local/MVIHealth.keystore")
+
+            keyPassword getSecretProperty("keystore.keyPass", "")
+            storePassword getSecretProperty("keystore.storePass", "")
+            keyAlias getSecretProperty("keystore.keyAlias", "")
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
     }
 }
 

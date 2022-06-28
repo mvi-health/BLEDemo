@@ -15,6 +15,7 @@
  */
 package com.example.bledemo.bluetooth
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.bluetooth.*
 import android.bluetooth.le.AdvertiseCallback
@@ -138,6 +139,7 @@ object BLEServer {
      * This requires setting up the available services and characteristics that other devices
      * can read and modify.
      */
+    @SuppressLint("MissingPermission")
     private fun setupGattServer(app: Application) {
         BLEServer.app = app
         gattServerCallback = GattServerCallback()
@@ -239,6 +241,7 @@ object BLEServer {
         Log.d(TAG, "connectToSelectedNetwork: About to request to network: $networkChoice")
         val bssid = MacAddress.fromString(networkChoice.id)
         val wifiNetworkSpecifier = WifiNetworkSpecifier.Builder()
+            .setSsid(networkChoice.name)
             .setBssid(bssid)
             .setWpa2Passphrase(networkChoice.password)
             .build()
